@@ -29,7 +29,7 @@ app.use("/api/cars", carRoutes)
 app.use("/api/tours", tourRoutes)
 app.use("/api/admin", adminRoutes)
 app.use("/api/admin-auth", adminAuthRoutes)
-app.use("/api/payment", require("./routes/paymentRoutes"))
+//app.use("/api/payment", require("./routes/paymentRoutes"))
 
 // Home Route
 app.get("/", (req, res) => {
