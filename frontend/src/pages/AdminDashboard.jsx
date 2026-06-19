@@ -18,7 +18,7 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     try {
       const res = await fetch(
-        "http://localhost:5000/api/admin/stats"
+        "https://gb-travel-1.onrender.com/api/admin/stats"
       )
 
       const data = await res.json()

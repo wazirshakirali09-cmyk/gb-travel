@@ -15,7 +15,7 @@ export default function AdminTours() {
   }, [])
 
   const fetchTours = async () => {
-    const res = await fetch("http://localhost:5000/api/tours")
+    const res = await fetch("https://gb-travel-1.onrender.com/api/tours")
     const data = await res.json()
     setTours(data.tours)
   }
@@ -30,7 +30,7 @@ export default function AdminTours() {
   const addTour = async (e) => {
     e.preventDefault()
 
-    await fetch("http://localhost:5000/api/tours", {
+    await fetch("https://gb-travel-1.onrender.com/api/tours", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -49,7 +49,7 @@ export default function AdminTours() {
   }
 
   const deleteTour = async (id) => {
-    await fetch(`http://localhost:5000/api/tours/${id}`, {
+    await fetch(`https://gb-travel-1.onrender.com/api/tours/${id}`, {
       method: "DELETE",
     })
 

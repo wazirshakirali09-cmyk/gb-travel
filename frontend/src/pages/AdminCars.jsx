@@ -1,74 +1,99 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
 export default function AdminCars() {
-  const [cars, setCars] = useState([])
+const [cars, setCars] = useState([]);
 
-  const [form, setForm] = useState({
-    name: "",
-    brand: "",
-    pricePerDay: "",
-    image: "",
-    description: "",
-  })
+const [form, setForm] = useState({
+name: "",
+brand: "",
+pricePerDay: "",
+image: "",
+description: "",
+});
 
-  useEffect(() => {
-    fetchCars()
-  }, [])
+useEffect(() => {
+fetchCars();
+}, []);
 
-  const fetchCars = async () => {
-    const res = await fetch("http://localhost:5000/api/cars")
-    const data = await res.json()
+const fetchCars = async () => {
+const res = await fetch(
+"https://gb-travel-1.onrender.com/api/cars"
+);
 
-    setCars(data.cars)
+
+const data = await res.json();
+setCars(data.cars || []);
+
+
+};
+
+const handleChange = (e) => {
+setForm({
+...form,
+[e.target.name]: e.target.value,
+});
+};
+
+const addCar = async (e) => {
+e.preventDefault();
+
+
+await fetch(
+  "https://gb-travel-1.onrender.com/api/cars",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(form),
   }
+);
 
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    })
-  }
+setForm({
+  name: "",
+  brand: "",
+  pricePerDay: "",
+  image: "",
+  description: "",
+});
 
-  const addCar = async (e) => {
-    e.preventDefault()
+fetchCars();
 
-    await fetch("http://localhost:5000/api/cars", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    })
 
-    setForm({
-      name: "",
-      brand: "",
-      pricePerDay: "",
-      image: "",
-      description: "",
-    })
+};
 
-    fetchCars()
-  }
+const deleteCar = async (id) => {
+await fetch(
+`https://gb-travel-1.onrender.com/api/cars/${id}`,
+{
+method: "DELETE",
+}
+);
 
-  const deleteCar = async (id) => {
-    await fetch(`http://localhost:5000/api/cars/${id}`, {
-      method: "DELETE",
-    })
 
-    fetchCars()
-  }
+fetchCars();
 
-  return (
-    <div className="bg-black min-h-screen text-white pt-36 px-6">
 
-      <h1 className="text-5xl font-bold mb-10">
-        Admin Cars
-      </h1>
+};
+
+return ( <div className="bg-black min-h-screen text-white pt-32 px-4 md:px-8">
+
+  <div className="max-w-7xl mx-auto">
+
+    <h1 className="text-4xl md:text-6xl font-extrabold mb-10 text-center">
+      Admin Cars Dashboard
+    </h1>
+
+    {/* Form */}
+    <div className="bg-gray-900 border border-gray-800 rounded-3xl p-6 md:p-8 mb-12">
+
+      <h2 className="text-2xl font-bold mb-6">
+        Add New Car
+      </h2>
 
       <form
         onSubmit={addCar}
-        className="max-w-2xl flex flex-col gap-4 mb-10"
+        className="grid md:grid-cols-2 gap-4"
       >
         <input
           type="text"
@@ -76,7 +101,8 @@ export default function AdminCars() {
           placeholder="Car Name"
           value={form.name}
           onChange={handleChange}
-          className="p-3 rounded bg-white text-black border border-gray-300"
+          className="p-3 rounded-xl bg-gray-800 border border-gray-700"
+          required
         />
 
         <input
@@ -85,7 +111,8 @@ export default function AdminCars() {
           placeholder="Brand"
           value={form.brand}
           onChange={handleChange}
-          className="p-3 rounded bg-white text-black border border-gray-300"
+          className="p-3 rounded-xl bg-gray-800 border border-gray-700"
+          required
         />
 
         <input
@@ -94,7 +121,8 @@ export default function AdminCars() {
           placeholder="Price Per Day"
           value={form.pricePerDay}
           onChange={handleChange}
-          className="p-3 rounded bg-white text-black border border-gray-300"
+          className="p-3 rounded-xl bg-gray-800 border border-gray-700"
+          required
         />
 
         <input
@@ -103,7 +131,8 @@ export default function AdminCars() {
           placeholder="Image URL"
           value={form.image}
           onChange={handleChange}
-          className="p-3 rounded bg-white text-black border border-gray-300"
+          className="p-3 rounded-xl bg-gray-800 border border-gray-700"
+          required
         />
 
         <textarea
@@ -111,61 +140,69 @@ export default function AdminCars() {
           placeholder="Description"
           value={form.description}
           onChange={handleChange}
-          className="p-3 rounded bg-white text-black border border-gray-300"
+          className="md:col-span-2 p-3 rounded-xl bg-gray-800 border border-gray-700"
+          rows="4"
+          required
         />
 
         <button
           type="submit"
-          className="bg-cyan-500 hover:bg-cyan-600 p-3 rounded font-bold"
+          className="md:col-span-2 bg-cyan-500 hover:bg-cyan-600 py-3 rounded-xl font-bold text-lg transition"
         >
           Add Car
         </button>
       </form>
+    </div>
 
-      <div className="grid md:grid-cols-3 gap-6">
+    {/* Cars Grid */}
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-        {cars.map((car) => (
-          <div
-            key={car._id}
-            className="bg-gray-900 rounded-2xl overflow-hidden"
-          >
-            <img
-              src={car.image}
-              alt={car.name}
-              className="h-56 w-full object-cover"
-            />
+      {cars.map((car) => (
+        <div
+          key={car._id}
+          className="bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden hover:border-cyan-500 transition duration-300"
+        >
+          <img
+            src={car.image}
+            alt={car.name}
+            className="h-64 w-full object-cover"
+          />
 
-            <div className="p-4">
+          <div className="p-5">
 
-              <h2 className="text-2xl font-bold">
-                {car.name}
-              </h2>
+            <span className="bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-full text-sm">
+              {car.brand}
+            </span>
 
-              <p className="text-gray-400 mt-2">
-                {car.brand}
-              </p>
+            <h2 className="text-2xl font-bold mt-3">
+              {car.name}
+            </h2>
 
-              <p className="text-cyan-400 mt-2">
-                PKR {car.pricePerDay}
-              </p>
+            <p className="text-cyan-400 text-xl mt-3">
+              PKR {car.pricePerDay} / Day
+            </p>
 
-              <p className="mt-2">
-                {car.description}
-              </p>
+            <p className="text-gray-400 mt-3">
+              {car.description}
+            </p>
 
-              <button
-                onClick={() => deleteCar(car._id)}
-                className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded mt-4"
-              >
-                Delete
-              </button>
+            <button
+              onClick={() => deleteCar(car._id)}
+              className="w-full mt-5 bg-red-600 hover:bg-red-700 py-3 rounded-xl font-semibold"
+            >
+              Delete Car
+            </button>
 
-            </div>
           </div>
-        ))}
-
-      </div>
+        </div>
+      ))}
 
     </div>
-  )
+
+  </div>
+
+</div>
+
+
+);
 }

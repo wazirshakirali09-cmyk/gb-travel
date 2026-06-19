@@ -14,7 +14,7 @@ export default function Cars() {
   const fetchCars = async () => {
     try {
       const res = await fetch(
-        "http://localhost:5000/api/cars"
+        "https://gb-travel-1.onrender.com/api/cars"
       )
 
       const data = await res.json()

@@ -9,7 +9,7 @@ export default function AdminBookings() {
 
   const fetchBookings = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/bookings")
+      const res = await fetch("https://gb-travel-1.onrender.com/api/bookings")
       const data = await res.json()
       setBookings(data.bookings || [])
     } catch (err) {
@@ -18,7 +18,7 @@ export default function AdminBookings() {
   }
 
   const updateStatus = async (id, status) => {
-    await fetch(`http://localhost:5000/api/bookings/${id}`, {
+    await fetch(`https://gb-travel-1.onrender.com/api/bookings/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),

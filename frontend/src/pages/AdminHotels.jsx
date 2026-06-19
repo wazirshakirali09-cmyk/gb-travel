@@ -17,7 +17,7 @@ export default function AdminHotels() {
 
   const fetchHotels = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/hotels")
+      const res = await fetch("https://gb-travel-1.onrender.com/api/hotels")
       const data = await res.json()
 
       setHotels(data.hotels || [])
@@ -36,7 +36,7 @@ export default function AdminHotels() {
   const addHotel = async (e) => {
     e.preventDefault()
 
-    await fetch("http://localhost:5000/api/hotels", {
+    await fetch("https://gb-travel-1.onrender.com/api/hotels", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export default function AdminHotels() {
   }
 
   const deleteHotel = async (id) => {
-    await fetch(`http://localhost:5000/api/hotels/${id}`, {
+    await fetch(`https://gb-travel-1.onrender.com/api/hotels/${id}`, {
       method: "DELETE",
     })
 

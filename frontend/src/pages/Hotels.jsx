@@ -14,7 +14,7 @@ export default function Hotels() {
   const fetchHotels = async () => {
     try {
       const res = await fetch(
-        "http://localhost:5000/api/hotels"
+        "https://gb-travel-1.onrender.com/api/hotels"
       )
 
       const data = await res.json()

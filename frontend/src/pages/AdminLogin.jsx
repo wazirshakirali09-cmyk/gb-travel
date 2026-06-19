@@ -12,7 +12,7 @@ export default function AdminLogin() {
 
     try {
       const res = await fetch(
-        "http://localhost:5000/api/admin-auth/login",
+        "https://gb-travel-1.onrender.com/api/admin-auth/login",
         {
           method: "POST",
           headers: {

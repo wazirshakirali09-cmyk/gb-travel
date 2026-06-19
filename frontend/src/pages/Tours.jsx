@@ -14,7 +14,7 @@ export default function Tours() {
   const fetchTours = async () => {
     try {
       const res = await fetch(
-        "http://localhost:5000/api/tours"
+        "https://gb-travel-1.onrender.com/api/tours"
       )
 
       const data = await res.json()
