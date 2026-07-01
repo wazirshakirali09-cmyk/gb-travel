@@ -1,88 +1,91 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import BASE_URL from "../config/api"
+import Loader from "../components/Loader"
 
 export default function Tours() {
-  const navigate = useNavigate()
 
-  const [tours, setTours] = useState([])
-  const [loading, setLoading] = useState(true)
+const [tours, setTours] = useState([])
+const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    fetchTours()
-  }, [])
+const navigate = useNavigate()
 
-  const fetchTours = async () => {
-    try {
-      const res = await fetch(
-        "https://gb-travel-1.onrender.com/api/tours"
-      )
+useEffect(() => {
+fetchTours()
+}, [])
 
-      const data = await res.json()
+const fetchTours = async () => {
+try {
+const res = await fetch(`${BASE_URL}/tours`)
+const data = await res.json()
 
-      setTours(data.tours)
-      setLoading(false)
-    } catch (error) {
-      console.log(error)
-      setLoading(false)
-    }
-  }
 
-  if (loading) {
-    return (
-      <div className="bg-black min-h-screen text-white pt-40 text-center text-3xl">
-        Loading Tours...
-      </div>
-    )
-  }
+  const list =
+    data.tours ||
+    data.data ||
+    data ||
+    []
 
-  return (
-    <div className="bg-black min-h-screen text-white pt-36 px-6">
-      <h1 className="text-6xl font-bold text-center mb-16">
-        Premium Tours
-      </h1>
+  setTours(Array.isArray(list) ? list : [])
+} catch (error) {
+  console.log("Tours API Error:", error)
+  setTours([])
+}
 
-      <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-10">
-        {tours.map((tour) => (
-          <div
-            key={tour._id}
-            className="bg-gray-900 rounded-3xl overflow-hidden border border-gray-800 hover:scale-105 transition"
-          >
-            <img
-              src={tour.image}
-              alt={tour.name}
-              className="h-72 w-full object-cover"
-            />
+setLoading(false)
 
-            <div className="p-6">
-              <h2 className="text-3xl font-bold">
-                {tour.name}
-              </h2>
 
-              <p className="mt-4 text-cyan-400 text-xl">
-                {tour.days}
-              </p>
+}
 
-              <p className="mt-4 text-gray-300">
-                {tour.description}
-              </p>
+if (loading) return <Loader />
 
-              <button
-                onClick={() =>
-                  navigate("/booking", {
-                    state: {
-                      serviceType: "tour",
-                      itemName: tour.name,
-                    },
-                  })
+return ( <div className="bg-black min-h-screen text-white pt-36 px-6">
+
+
+  <h1 className="text-5xl font-bold text-center mb-16">
+    Premium Tours
+  </h1>
+
+  <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-10">
+
+    {tours.length > 0 ? (
+      tours.map((tour) => (
+        <div key={tour._id} className="bg-gray-900 rounded-3xl p-6">
+
+          <img
+            src={tour.image}
+            className="h-72 w-full object-cover rounded-xl"
+          />
+
+          <h2 className="text-2xl font-bold mt-4">
+            {tour.name}
+          </h2>
+
+          <button
+            onClick={() =>
+              navigate("/booking", {
+                state: {
+                  serviceType: "tour",
+                  itemName: tour.name
                 }
-                className="mt-6 bg-cyan-500 hover:bg-cyan-600 px-6 py-3 rounded-2xl font-semibold"
-              >
-                Explore Tour
-              </button>
-            </div>
-          </div>
-        ))}
+              })
+            }
+            className="mt-5 w-full bg-cyan-500 py-3 rounded-xl font-bold"
+          >
+            Explore Tour
+          </button>
+
+        </div>
+      ))
+    ) : (
+      <div className="text-center col-span-full text-gray-400">
+        No Tours Found
       </div>
-    </div>
-  )
+    )}
+
+  </div>
+</div>
+
+
+)
 }

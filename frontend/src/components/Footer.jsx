@@ -1,66 +1,76 @@
 export default function Footer() {
   return (
-    <footer className="bg-gray-950 border-t border-gray-800 text-white py-10 mt-20">
+    <footer className="bg-black border-t border-white/10 mt-20">
 
-      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-10">
+      <div className="max-w-7xl mx-auto px-6 py-14 grid md:grid-cols-3 gap-10">
 
-        {/* Brand */}
+        {/* Logo */}
         <div>
-
-          <h1 className="text-3xl font-bold text-cyan-400">
+          <h2 className="text-3xl font-bold text-cyan-400">
             Northern Escape
-          </h1>
+          </h2>
 
-          <p className="mt-4 text-gray-400">
-            Explore the beauty of Gilgit Baltistan
-            with luxury tours, hotels and cars.
+          <p className="text-gray-400 mt-4 leading-7">
+            Luxury Hotels, Cars and Tours
+            for Gilgit Baltistan and
+            Northern Pakistan.
           </p>
-
         </div>
 
-        {/* Links */}
+        {/* Quick Links */}
         <div>
-
-          <h2 className="text-2xl font-semibold mb-4">
+          <h2 className="text-white font-bold text-xl mb-5">
             Quick Links
           </h2>
 
-          <div className="flex flex-col gap-3 text-gray-400">
+          <div className="space-y-3">
 
-            <a href="#">Home</a>
-            <a href="#">Hotels</a>
-            <a href="#">Cars</a>
-            <a href="#">Tours</a>
+            <p className="text-gray-400 hover:text-cyan-400 transition cursor-pointer">
+              Home
+            </p>
+
+            <p className="text-gray-400 hover:text-cyan-400 transition cursor-pointer">
+              Hotels
+            </p>
+
+            <p className="text-gray-400 hover:text-cyan-400 transition cursor-pointer">
+              Cars
+            </p>
+
+            <p className="text-gray-400 hover:text-cyan-400 transition cursor-pointer">
+              Tours
+            </p>
 
           </div>
-
         </div>
 
-        {/* Contact */}
+        {/* Services */}
         <div>
-
-          <h2 className="text-2xl font-semibold mb-4">
-            Contact
+          <h2 className="text-white font-bold text-xl mb-5">
+            Services
           </h2>
 
-          <p className="text-gray-400">
-            Skardu, Gilgit Baltistan
-          </p>
+          <div className="space-y-3">
 
-          <p className="text-gray-400 mt-2">
-            +92 327 4399093
-          </p>
+            <p className="text-gray-400 hover:text-cyan-400 transition cursor-pointer">
+              Hotel Booking
+            </p>
 
-          <p className="text-gray-400 mt-2">
-            wazirshakirali09@gmail.com
-          </p>
+            <p className="text-gray-400 hover:text-cyan-400 transition cursor-pointer">
+              Car Rentals
+            </p>
 
+            <p className="text-gray-400 hover:text-cyan-400 transition cursor-pointer">
+              Tour Packages
+            </p>
+
+          </div>
         </div>
 
       </div>
 
-      <div className="text-center text-gray-500 mt-10">
-        © 2026 Northern Escape. All rights reserved.
+      <div className="border-t border-white/10 py-5 text-center text-gray-500">
+        © 2026 Northern Escape | All Rights Reserved
       </div>
 
     </footer>

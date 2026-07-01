@@ -1,92 +1,91 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import BASE_URL from "../config/api"
+import Loader from "../components/Loader"
 
 export default function Cars() {
-  const navigate = useNavigate()
 
-  const [cars, setCars] = useState([])
-  const [loading, setLoading] = useState(true)
+const [cars, setCars] = useState([])
+const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    fetchCars()
-  }, [])
+const navigate = useNavigate()
 
-  const fetchCars = async () => {
-    try {
-      const res = await fetch(
-        "https://gb-travel-1.onrender.com/api/cars"
-      )
+useEffect(() => {
+fetchCars()
+}, [])
 
-      const data = await res.json()
+const fetchCars = async () => {
+try {
+const res = await fetch(`${BASE_URL}/cars`)
+const data = await res.json()
 
-      setCars(data.cars)
-      setLoading(false)
-    } catch (error) {
-      console.log(error)
-      setLoading(false)
-    }
-  }
 
-  if (loading) {
-    return (
-      <div className="bg-black min-h-screen text-white pt-40 text-center text-3xl">
-        Loading Cars...
-      </div>
-    )
-  }
+  const list =
+    data.cars ||
+    data.data ||
+    data ||
+    []
 
-  return (
-    <div className="bg-black min-h-screen text-white pt-36 px-6">
-      <h1 className="text-6xl font-bold text-center mb-16">
-        Luxury Cars
-      </h1>
+  setCars(Array.isArray(list) ? list : [])
+} catch (error) {
+  console.log("Cars API Error:", error)
+  setCars([])
+}
 
-      <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-10">
-        {cars.map((car) => (
-          <div
-            key={car._id}
-            className="bg-gray-900 rounded-3xl overflow-hidden border border-gray-800 hover:scale-105 transition"
-          >
-            <img
-              src={car.image}
-              alt={car.name}
-              className="h-72 w-full object-cover"
-            />
+setLoading(false)
 
-            <div className="p-6">
-              <h2 className="text-3xl font-bold">
-                {car.name}
-              </h2>
 
-              <p className="mt-2 text-gray-400">
-                {car.brand}
-              </p>
+}
 
-              <p className="mt-4 text-cyan-400 text-xl">
-                PKR {car.pricePerDay} / Day
-              </p>
+if (loading) return <Loader />
 
-              <p className="mt-4 text-gray-300">
-                {car.description}
-              </p>
+return ( <div className="bg-black min-h-screen text-white pt-36 px-6">
 
-              <button
-                onClick={() =>
-                  navigate("/booking", {
-                    state: {
-                      serviceType: "car",
-                      itemName: car.name,
-                    },
-                  })
+
+  <h1 className="text-5xl font-bold text-center mb-16">
+    Luxury Cars
+  </h1>
+
+  <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-10">
+
+    {cars.length > 0 ? (
+      cars.map((car) => (
+        <div key={car._id} className="bg-gray-900 rounded-3xl p-6">
+
+          <img
+            src={car.image}
+            className="h-72 w-full object-cover rounded-xl"
+          />
+
+          <h2 className="text-2xl font-bold mt-4">
+            {car.name}
+          </h2>
+
+          <button
+            onClick={() =>
+              navigate("/booking", {
+                state: {
+                  serviceType: "car",
+                  itemName: car.name
                 }
-                className="mt-6 bg-cyan-500 hover:bg-cyan-600 px-6 py-3 rounded-2xl font-semibold"
-              >
-                Rent Now
-              </button>
-            </div>
-          </div>
-        ))}
+              })
+            }
+            className="mt-5 w-full bg-cyan-500 py-3 rounded-xl font-bold"
+          >
+            Rent Now
+          </button>
+
+        </div>
+      ))
+    ) : (
+      <div className="text-center col-span-full text-gray-400">
+        No Cars Found
       </div>
-    </div>
-  )
+    )}
+
+  </div>
+</div>
+
+
+)
 }

@@ -1,16 +1,40 @@
-export default function WhatsAppButton() {
-  return (
-    <a
-      href="https://wa.me/923274399093"
-      target="_blank"
-      rel="noreferrer"
-      className="fixed bottom-6 right-6 bg-green-500 p-4 rounded-full shadow-lg z-50"
-    >
-      <img
-        src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
-        alt="whatsapp"
-        className="w-8 h-8"
-      />
-    </a>
-  )
+export default function WhatsAppBar(){
+
+const phoneNumber = "92300XXXXXXX" // apna number yahan set karna
+
+const message =
+"Hello! I need help with booking (Hotels/Cars/Tours)"
+
+const url =
+`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
+
+return(
+
+<a
+href={url}
+target="_blank"
+rel="noreferrer"
+className="
+fixed
+bottom-6
+right-6
+bg-green-500
+hover:bg-green-600
+text-white
+p-4
+rounded-full
+shadow-2xl
+shadow-green-500/30
+z-50
+animate-pulse
+"
+
+>
+
+💬
+
+</a>
+
+)
+
 }

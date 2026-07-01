@@ -1,96 +1,283 @@
 import { useState } from "react"
 
 export default function Contact() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  })
 
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    })
-  }
+const [form,setForm]=useState({
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+name:"",
+email:"",
+message:""
 
-    if (!form.name || !form.email || !form.message) {
-      alert("Please fill required fields")
-      return
-    }
+})
 
-    alert("Message Sent Successfully ✅")
+const handleChange=(e)=>{
 
-    setForm({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    })
-  }
+setForm({
 
-  return (
-    <div className="bg-black min-h-screen text-white pt-36 px-6">
+...form,
+[e.target.name]:e.target.value
 
-      <div className="max-w-4xl mx-auto">
+})
 
-        <h1 className="text-6xl font-bold text-center mb-16">
-          Contact Us
-        </h1>
+}
 
-        <form
-          onSubmit={handleSubmit}
-          className="bg-gray-900 p-10 rounded-3xl border border-gray-800"
-        >
+const handleSubmit=(e)=>{
 
-          <input
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            placeholder="Your Name"
-            className="bg-black border border-gray-700 p-4 rounded-2xl w-full mb-4"
-          />
+e.preventDefault()
 
-          <input
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="Your Email"
-            className="bg-black border border-gray-700 p-4 rounded-2xl w-full mb-4"
-          />
+alert("Message Sent Successfully ✅")
 
-          <input
-            name="subject"
-            value={form.subject}
-            onChange={handleChange}
-            placeholder="Subject"
-            className="bg-black border border-gray-700 p-4 rounded-2xl w-full mb-4"
-          />
+setForm({
 
-          <textarea
-            name="message"
-            value={form.message}
-            onChange={handleChange}
-            placeholder="Message"
-            rows="5"
-            className="bg-black border border-gray-700 p-4 rounded-2xl w-full mb-4"
-          />
+name:"",
+email:"",
+message:""
 
-          <button
-            type="submit"
-            className="bg-cyan-500 px-6 py-3 rounded-2xl font-bold w-full"
-          >
-            Send Message
-          </button>
+})
 
-        </form>
+}
 
-      </div>
+return(
 
-    </div>
-  )
+<div className="
+bg-black
+text-white
+min-h-screen
+pt-32
+px-6
+">
+
+<section className="
+text-center
+mb-16
+">
+
+<h1 className="
+text-5xl
+md:text-7xl
+font-black
+">
+
+Contact
+
+<span className="
+text-cyan-400
+">
+{" "}Us </span>
+
+</h1>
+
+<p className="
+mt-5
+text-gray-400
+max-w-2xl
+mx-auto
+">
+
+Get in touch for hotels,
+cars and premium tours
+
+</p>
+
+</section>
+
+<div className="
+max-w-7xl
+mx-auto
+grid
+md:grid-cols-2
+gap-10
+">
+
+<div className="
+space-y-6
+">
+
+<div className="
+bg-white/5
+border
+border-white/10
+rounded-3xl
+p-6
+backdrop-blur-xl
+">
+
+<h2 className="
+text-xl
+font-bold
+">
+
+📍 Address
+
+</h2>
+
+<p className="
+mt-3
+text-gray-400
+">
+
+Gilgit Baltistan,
+Pakistan
+
+</p>
+
+</div>
+
+<div className="
+bg-white/5
+border
+border-white/10
+rounded-3xl
+p-6
+backdrop-blur-xl
+">
+
+<h2 className="
+text-xl
+font-bold
+">
+
+📞 Phone
+
+</h2>
+
+<p className="
+mt-3
+text-gray-400
+">
+
++92 XXX XXXXXXX
+
+</p>
+
+</div>
+
+<div className="
+bg-white/5
+border
+border-white/10
+rounded-3xl
+p-6
+backdrop-blur-xl
+">
+
+<h2 className="
+text-xl
+font-bold
+">
+
+✉ Email
+
+</h2>
+
+<p className="
+mt-3
+text-gray-400
+">
+
+[info@gbtravel.com](mailto:info@gbtravel.com)
+
+</p>
+
+</div>
+
+</div>
+
+<form
+onSubmit={handleSubmit}
+className="
+bg-white/5
+border
+border-white/10
+rounded-3xl
+p-8
+backdrop-blur-xl
+"
+>
+
+<h2 className="
+text-2xl
+font-bold
+mb-6
+">
+
+Send Message
+
+</h2>
+
+<div className="
+space-y-5
+">
+
+<input
+type="text"
+name="name"
+value={form.name}
+onChange={handleChange}
+placeholder="Full Name"
+className="
+w-full
+bg-black
+p-4
+rounded-xl
+outline-none
+"
+/>
+
+<input
+type="email"
+name="email"
+value={form.email}
+onChange={handleChange}
+placeholder="Email"
+className="
+w-full
+bg-black
+p-4
+rounded-xl
+outline-none
+"
+/>
+
+<textarea
+rows="6"
+name="message"
+value={form.message}
+onChange={handleChange}
+placeholder="Your Message"
+className="
+w-full
+bg-black
+p-4
+rounded-xl
+outline-none
+"
+/>
+
+<button
+className="
+w-full
+bg-cyan-500
+py-4
+rounded-xl
+font-bold
+hover:bg-cyan-600
+transition
+"
+>
+
+Send Message
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+)
+
 }

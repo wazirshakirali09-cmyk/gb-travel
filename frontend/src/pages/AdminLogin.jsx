@@ -2,89 +2,256 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 export default function AdminLogin() {
-  const navigate = useNavigate()
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+const navigate=useNavigate()
 
-  const handleLogin = async (e) => {
-    e.preventDefault()
+const [showPassword,setShowPassword]=useState(false)
 
-    try {
-      const res = await fetch(
-        "https://gb-travel-1.onrender.com/api/admin-auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        }
-      )
+const [loading,setLoading]=useState(false)
 
-      const data = await res.json()
+const [form,setForm]=useState({
 
-      if (data.success) {
-        localStorage.setItem(
-          "adminToken",
-          data.token
-        )
+email:"",
+password:"",
+remember:false
 
-        alert("Login Successful ✅")
+})
 
-        navigate("/admin")
-      } else {
-        alert(data.message)
-      }
+const handleChange=(e)=>{
 
-    } catch (error) {
-      console.log(error)
-      alert("Login Failed ❌")
-    }
-  }
+const {name,value,type,checked}=e.target
 
-  return (
-    <div className="bg-black min-h-screen text-white flex items-center justify-center">
+setForm({
 
-      <form
-        onSubmit={handleLogin}
-        className="bg-gray-900 p-10 rounded-3xl w-full max-w-md"
-      >
-        <h1 className="text-4xl font-bold text-center mb-8">
-          Admin Login
-        </h1>
+...form,
+[name]:
+type==="checkbox"
+? checked
+: value
 
-        <input
-          type="email"
-          placeholder="Admin Email"
-          value={email}
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
-          className="w-full p-3 mb-4 rounded bg-white text-black border border-gray-300 outline-none"
-        />
+})
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
-          className="w-full p-3 mb-4 rounded bg-white text-black border border-gray-300 outline-none"
-        />
+}
 
-        <button
-          type="submit"
-          className="w-full p-3 mb-4 rounded bg-cyan-500 hover:bg-cyan-600 font-bold"
-        >
-          Login
-        </button>
-      </form>
+const handleSubmit=(e)=>{
 
-    </div>
-  )
+e.preventDefault()
+
+if(
+!form.email ||
+!form.password
+){
+
+alert("Please fill all fields")
+return
+
+}
+
+setLoading(true)
+
+setTimeout(()=>{
+
+localStorage.setItem(
+"adminToken",
+"adminLogged"
+)
+
+navigate("/admin")
+
+setLoading(false)
+
+},1500)
+
+}
+
+return(
+
+<div className="
+bg-black
+min-h-screen
+flex
+justify-center
+items-center
+px-6
+text-white
+">
+
+<div className="
+w-full
+max-w-md
+bg-white/5
+backdrop-blur-xl
+border
+border-white/10
+rounded-[35px]
+p-8
+shadow-2xl
+shadow-cyan-500/10
+">
+
+<div className="text-center">
+
+<h1 className="
+text-4xl
+font-black
+">
+
+Admin
+
+<span className="
+text-cyan-400
+">
+Login </span>
+
+</h1>
+
+<p className="
+text-gray-400
+mt-3
+">
+
+Secure dashboard access
+
+</p>
+
+</div>
+
+<form
+onSubmit={handleSubmit}
+className="
+mt-8
+space-y-5
+"
+>
+
+<input
+type="email"
+name="email"
+value={form.email}
+onChange={handleChange}
+placeholder="Admin Email"
+className="
+w-full
+bg-black
+p-4
+rounded-xl
+outline-none
+border
+border-white/10
+"
+/>
+
+<div className="relative">
+
+<input
+type={
+showPassword
+? "text"
+: "password"
+}
+name="password"
+value={form.password}
+onChange={handleChange}
+placeholder="Password"
+className="
+w-full
+bg-black
+p-4
+rounded-xl
+outline-none
+border
+border-white/10
+"
+/>
+
+<button
+type="button"
+onClick={()=>
+setShowPassword(
+!showPassword
+)
+}
+className="
+absolute
+right-4
+top-4
+text-gray-400
+"
+
+>
+
+{showPassword ? "🙈" : "👁"}
+
+</button>
+
+</div>
+
+<div className="
+flex
+justify-between
+items-center
+text-sm
+">
+
+<label className="
+flex
+items-center
+gap-2
+">
+
+<input
+type="checkbox"
+name="remember"
+checked={form.remember}
+onChange={handleChange}
+/>
+
+Remember me
+
+</label>
+
+<p className="
+text-cyan-400
+cursor-pointer
+">
+
+Forgot Password?
+
+</p>
+
+</div>
+
+<button
+className="
+w-full
+bg-cyan-500
+py-4
+rounded-xl
+font-bold
+hover:bg-cyan-600
+transition
+"
+
+disabled={loading}
+
+>
+
+{
+loading
+?
+"Logging in..."
+:
+"Login"
+}
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+)
+
 }

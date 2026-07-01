@@ -1,102 +1,144 @@
-import { useState, useEffect } from "react"
 import { useLocation } from "react-router-dom"
+import { useState } from "react"
 
 export default function Booking() {
-  const location = useLocation()
+  const { state } = useLocation()
 
-  const [formData, setFormData] = useState({
-    customerName: "",
-    customerEmail: "",
+  const [form, setForm] = useState({
+    name: "",
     phone: "",
-    serviceType: "",
-    itemName: "",
-    startDate: "",
-    endDate: "",
+    persons: "",
+    date: ""
   })
 
-  useEffect(() => {
-    if (location.state) {
-      setFormData((prev) => ({
-        ...prev,
-        serviceType: location.state.serviceType || "",
-        itemName: location.state.itemName || "",
-      }))
-    }
-  }, [location])
+  const [success, setSuccess] = useState(false)
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    })
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
 
-    // ✅ CLEAN VALIDATION (ONLY ONCE)
-    const { customerName, customerEmail, phone, serviceType, itemName, startDate, endDate } = formData
-
-    if (!customerName || !customerEmail || !phone || !serviceType || !itemName || !startDate || !endDate) {
+    if (!form.name || !form.phone || !form.persons || !form.date) {
       alert("Please fill all fields")
       return
     }
 
-    try {
-      const res = await fetch("https://gb-travel-1.onrender.com/api/bookings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      })
+    setSuccess(true)
 
-      const data = await res.json()
+    setForm({
+      name: "",
+      phone: "",
+      persons: "",
+      date: ""
+    })
 
-      if (data.success) {
-        alert("Booking Saved Successfully ✅")
-
-        setFormData({
-          customerName: "",
-          customerEmail: "",
-          phone: "",
-          serviceType: "",
-          itemName: "",
-          startDate: "",
-          endDate: "",
-        })
-      } else {
-        alert(data.message)
-      }
-    } catch (error) {
-      console.log(error)
-      alert("Booking Failed ❌")
-    }
+    setTimeout(() => {
+      setSuccess(false)
+    }, 3000)
   }
 
   return (
-    <div className="bg-black min-h-screen text-white pt-36 px-6">
-      <h1 className="text-5xl font-bold text-center mb-10">Book Now</h1>
+    <div className="min-h-screen bg-black text-white pt-32 px-6">
 
-      <form onSubmit={handleSubmit} className="max-w-2xl mx-auto flex flex-col gap-4">
+      {/* SUCCESS MESSAGE */}
+      {success && (
+        <div className="fixed top-24 left-1/2 -translate-x-1/2 bg-green-500 text-black px-6 py-3 rounded-xl font-bold shadow-lg">
+          Booking Confirmed Successfully ✅
+        </div>
+      )}
 
-        <input name="customerName" value={formData.customerName} onChange={handleChange} placeholder="Name" className="p-3 bg-white text-black rounded" />
+      {/* TITLE */}
+      <div className="text-center mb-10">
+        <h1 className="text-5xl font-black">
+          Complete Your <span className="text-cyan-400">Booking</span>
+        </h1>
+        <p className="text-gray-400 mt-4">
+          Fill details to reserve your trip
+        </p>
+      </div>
 
-        <input name="customerEmail" value={formData.customerEmail} onChange={handleChange} placeholder="Email" className="p-3 bg-white text-black rounded" />
+      <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
 
-        <input name="phone" value={formData.phone} onChange={handleChange} placeholder="Phone" className="p-3 bg-white text-black rounded" />
+        {/* LEFT CARD */}
+        <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-8">
+          <h2 className="text-2xl font-bold mb-6">Booking Summary</h2>
 
-        <select name="serviceType" value={formData.serviceType} onChange={handleChange} className="p-3 bg-white text-black rounded">
-          <option value="">Select Service</option>
-          <option value="hotel">Hotel</option>
-          <option value="car">Car</option>
-          <option value="tour">Tour</option>
-        </select>
+          <div className="space-y-5">
+            <div>
+              <p className="text-gray-400">Service</p>
+              <h2 className="text-cyan-400 text-xl font-bold">
+                {state?.serviceType || "Not Selected"}
+              </h2>
+            </div>
 
-        <input name="itemName" value={formData.itemName} onChange={handleChange} placeholder="Item Name" className="p-3 bg-white text-black rounded" />
+            <div>
+              <p className="text-gray-400">Selected Item</p>
+              <h2 className="text-xl font-bold">
+                {state?.itemName || "None"}
+              </h2>
+            </div>
+          </div>
+        </div>
 
-        <input type="date" name="startDate" value={formData.startDate} onChange={handleChange} className="p-3 bg-white text-black rounded" />
+        {/* FORM */}
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-8"
+        >
+          <h2 className="text-2xl font-bold mb-6">Your Information</h2>
 
-        <input type="date" name="endDate" value={formData.endDate} onChange={handleChange} className="p-3 bg-white text-black rounded" />
+          <div className="space-y-5">
 
-        <button className="bg-cyan-500 py-3 rounded font-bold">Submit Booking</button>
+            <input
+              type="text"
+              placeholder="Full Name"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              className="w-full bg-black border border-white/10 p-4 rounded-xl outline-none focus:border-cyan-400"
+            />
 
-      </form>
+            <input
+              type="number"
+              placeholder="Phone Number"
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
+              className="w-full bg-black border border-white/10 p-4 rounded-xl outline-none focus:border-cyan-400"
+            />
+
+            <input
+              type="number"
+              placeholder="Persons"
+              name="persons"
+              value={form.persons}
+              onChange={handleChange}
+              className="w-full bg-black border border-white/10 p-4 rounded-xl outline-none focus:border-cyan-400"
+            />
+
+            <input
+              type="date"
+              name="date"
+              value={form.date}
+              onChange={handleChange}
+              className="w-full bg-black border border-white/10 p-4 rounded-xl outline-none focus:border-cyan-400"
+            />
+
+            <button
+              className="w-full bg-cyan-500 py-4 rounded-xl font-bold hover:bg-cyan-600 transition transform hover:scale-[1.02]"
+            >
+              Confirm Booking
+            </button>
+
+          </div>
+        </form>
+
+      </div>
     </div>
   )
 }
